@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/mapsFragment">
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.example.befort.MapsFragment"
+        android:label="@string/inicio"
+        tools:layout="@layout/fragment_maps" />
+    <fragment
+        android:id="@+id/maquinasFragment"
+        android:name="com.example.befort.MaquinasFragment"
+        android:label="Maquinas"
+        tools:layout="@layout/fragment_maquinas" />
+    <fragment
+        android:id="@+id/parquesFragment"
+        android:name="com.example.befort.ParquesFragment"
+        android:label="Parques"
+        tools:layout="@layout/fragment_parques" />
+    <fragment
+        android:id="@+id/newMaquinaFragment"
+        android:name="com.example.befort.NewMaquinaFragment"
+        android:label="Nueva Maquina"
+        tools:layout="@layout/fragment_new_maquina" />
+    <fragment
+        android:id="@+id/newParqueFragment"
+        android:name="com.example.befort.NewParqueFragment"
+        android:label="Nuevo Parque"
+        tools:layout="@layout/fragment_new_parque" />
+</navigation>

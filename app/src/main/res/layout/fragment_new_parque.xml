@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewMaquinaFragment">
+
+    <!-- maquina_form_layout.xml -->
+
+    <!-- fragment_nuevo_parque.xml -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Campo para ingresar el nombre del parque -->
+        <EditText
+            android:id="@+id/editTextNombreParque"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre del Parque"
+            android:inputType="text" />
+
+        <!-- Spinner (o DropDownMenu) para seleccionar las máquinas disponibles -->
+        <Spinner
+            android:id="@+id/spinnerMaquinas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp" />
+
+        <!-- Botón para agregar máquinas al parque -->
+        <Button
+            android:id="@+id/btnAgregarMaquina"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Agregar Máquina" />
+
+        <!-- Lista de máquinas seleccionadas -->
+        <TextView
+            android:id="@+id/textViewMaquinasSeleccionadas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Máquinas Seleccionadas:"
+            android:textStyle="bold" />
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="16dp" />
+
+        <!-- Espacio para mostrar las máquinas seleccionadas -->
+        <LinearLayout
+            android:id="@+id/layoutMaquinasSeleccionadas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp" />
+
+        <!-- Botón para guardar el nuevo parque -->
+        <Button
+            android:id="@+id/btnGuardarParque"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Guardar Parque"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+
+
+
+</FrameLayout>

@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "891512906198",
+    "firebase_url": "https://be-fort-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "be-fort",
+    "storage_bucket": "be-fort.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891512906198:android:104aec46ed98f405bd4477",
+        "android_client_info": {
+          "package_name": "com.example.befort"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtmx5ZmiUCBicXYlsDc87RBNheeX-wcWI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891512906198:android:5e04f9263f2298d1bd4477",
+        "android_client_info": {
+          "package_name": "com.example.prueba"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtmx5ZmiUCBicXYlsDc87RBNheeX-wcWI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
