@@ -29,4 +29,10 @@
         android:name="com.example.befort.NewParqueFragment"
         android:label="Nuevo Parque"
         tools:layout="@layout/fragment_new_parque" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.befort.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
 </navigation>
+
