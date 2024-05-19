@@ -11,4 +11,5 @@
     <string name="nombre">Nombre</string>
     <string name="nueva_maquina">Nueva Maquina</string>
     <string name="nuevo_parque">Nuevo Parque</string>
+    <string name="login">Login</string>
 </resources>
