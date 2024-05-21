@@ -34,5 +34,10 @@
         android:name="com.example.befort.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/adminFragment"
+        android:name="com.example.befort.AdminFragment"
+        android:label="fragment_admin"
+        tools:layout="@layout/fragment_admin" />
 </navigation>
 

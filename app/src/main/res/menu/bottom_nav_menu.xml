@@ -17,11 +17,7 @@
         android:icon="@drawable/ic_action_name"
         android:title="@string/parques" />
 
-    <item
-        android:id="@+id/newMaquinaFragment"
-        android:icon="@drawable/baseline_add_24"
-        android:title="@string/nueva_maquina"
-        android:visible="false" />
+
 
     <item
         android:id="@+id/newParqueFragment"
