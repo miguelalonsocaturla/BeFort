@@ -2,7 +2,6 @@ package com.example.befort;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,6 +14,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,6 +37,15 @@ public class LoginFragment extends Fragment {
 
         // Configurar el evento de clic del botón de inicio de sesión
         configureLoginButton(view);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserPreferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+        // Comprueba si el usuario ya está logueado
+        if (isUserLoggedIn()!=null) {
+            // Redirige al usuario según el tipo de usuario almacenado
+            redirectUser(view);
+        }
 
         return view;
     }
@@ -56,7 +66,7 @@ public class LoginFragment extends Fragment {
             String password = editTextPassword.getText().toString().trim();
 
             if (validateInputs(email, password)) {
-                checkUserCredentials(email, password);
+                checkUserCredentials(email, password, view);
             }
         });
     }
@@ -75,7 +85,7 @@ public class LoginFragment extends Fragment {
         return true;
     }
 
-    private void checkUserCredentials(final String email, final String password) {
+    private void checkUserCredentials(final String email, final String password, View view) {
         db.collection("usuarios")
                 .whereEqualTo("usuario", email)
                 .whereEqualTo("contraseña", password)
@@ -87,7 +97,7 @@ public class LoginFragment extends Fragment {
                             DocumentSnapshot document = querySnapshot.getDocuments().get(0);
                             Boolean userType = (Boolean) document.get("tipo");
 
-                            handleLoginSuccess(userType);
+                            handleLoginSuccess(userType, view);
                         } else {
                             showToast("Credenciales incorrectas");
                         }
@@ -97,25 +107,37 @@ public class LoginFragment extends Fragment {
                 });
     }
 
-    private void handleLoginSuccess(Boolean userType) {
+    private void handleLoginSuccess(Boolean userType, View view) {
         saveUserType(userType);
         showToast("Inicio de sesión exitoso");
-        // Aquí puedes manejar la variable userType como desees
-
-        // Si el tipo de usuario es true, inicia AdminActivity
-        if (userType != null && userType) {
-            Intent intent = new Intent(getActivity(), NewParqueFragment.class);
-            startActivity(intent);
-        } else {
-            // Maneja la lógica para otros tipos de usuarios aquí
-        }
+        redirectUser(view);
     }
 
     private void saveUserType(Boolean userType) {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserPreferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("admin", userType);
+        // Convertir el valor booleano a cadena "Y" o "N"
+        String userTypeString = userType ? "Y" : "N";
+
+        editor.putString("admin", userTypeString); // Guardar el tipo de usuario como cadena
         editor.apply();
+    }
+
+    private String isUserLoggedIn() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserPreferences", MODE_PRIVATE);
+        return sharedPreferences.getString("admin", null); // Obtener el tipo de usuario como cadena
+    }
+
+    private void redirectUser(View view) {
+        String userType = isUserLoggedIn();
+
+
+        NavController navController = Navigation.findNavController(this.getActivity(), R.id.nav_host_fragment_activity_main);
+        if ("Y".equals(userType)) {
+            navController.navigate(R.id.action_loginFragment_to_adminFragment);
+        } else {
+            navController.navigate(R.id.action_loginFragment_to_mapsFragment);
+        }
     }
 
     private void showToast(String message) {
