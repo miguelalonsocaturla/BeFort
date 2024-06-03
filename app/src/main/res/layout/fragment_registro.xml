@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegistroFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+
+        <!-- Campo de entrada de email -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutEmail1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Correo electrónico">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextEmail1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Campo de entrada de contraseña -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutPassword1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contraseña">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextPassword1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Botón de registro -->
+        <Button
+            android:id="@+id/buttonRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Crear cuenta"
+            android:textColor="@android:color/white" />
+
+
+
+        <TextView
+            android:id="@+id/textViewLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="¿Ya tienes una cuenta? Inicia sesión aquí" />
+
+    </LinearLayout>
+
+</FrameLayout>

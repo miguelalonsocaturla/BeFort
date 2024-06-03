@@ -43,17 +43,53 @@
             android:minLines="3" />
 
         <!-- Botón "Añadir" -->
+        <LinearLayout
+            android:id="@+id/layoutMaquinasSeleccionadas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical" />
+
+        <!-- Botón para guardar el nuevo parque -->
         <Button
             android:id="@+id/buttonAgregar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#007BFF"
-            android:paddingStart="24dp"
-            android:paddingTop="12dp"
-            android:paddingEnd="24dp"
-            android:paddingBottom="12dp"
-            android:text="Añadir"
-            android:textColor="#FFFFFF" />
+            android:layout_marginTop="24dp"
+            android:text="Guardar Maquina"
+            android:textColor="@android:color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right">
+
+
+            <Button
+                android:id="@+id/volver1"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Volver"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right">
+
+
+        <Button
+            android:id="@+id/volver"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Volver"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 

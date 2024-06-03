@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.befort.model.Maquinas;
 import com.example.befort.model.Parques;
@@ -84,6 +86,10 @@ public class NewParqueFragment extends Fragment implements OnMapReadyCallback {
         // Configurar botón "Guardar Parque"
         Button btnGuardarParque = view.findViewById(R.id.btnGuardarParque);
         btnGuardarParque.setOnClickListener(v -> guardarParque());
+
+        // Configurar botón "Guardar Parque"
+        Button btnVolver = view.findViewById(R.id.volver);
+        btnVolver.setOnClickListener(v -> volver());
 
         return view;
     }
@@ -197,5 +203,10 @@ public class NewParqueFragment extends Fragment implements OnMapReadyCallback {
                     Log.e("FirebaseError", "Error al guardar parque", e);
                     Toast.makeText(requireContext(), "Error al guardar el parque", Toast.LENGTH_SHORT).show();
                 });
+    }
+
+    private void volver(){
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+        navController.navigate(R.id.action_newParqueFragment_to_adminFragment);
     }
 }

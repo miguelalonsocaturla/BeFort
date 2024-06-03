@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,17 @@ public class LoginFragment extends Fragment {
             // Redirige al usuario según el tipo de usuario almacenado
             redirectUser(view);
         }
+
+        // Configurar el TextView para registrar una cuenta
+        TextView textViewRegister = view.findViewById(R.id.textViewRegister);
+        textViewRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navegar al fragmento de registro
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+                navController.navigate(R.id.action_loginFragment_to_registroFragment);
+            }
+        });
 
         return view;
     }

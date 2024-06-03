@@ -45,6 +45,7 @@
             android:layout_marginTop="16dp"
             android:text="Máquinas Seleccionadas:"
             android:textStyle="bold" />
+
         <com.google.android.gms.maps.MapView
             android:id="@+id/mapView"
             android:layout_width="match_parent"
@@ -56,8 +57,8 @@
             android:id="@+id/layoutMaquinasSeleccionadas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:orientation="vertical" />
 
         <!-- Botón para guardar el nuevo parque -->
         <Button
@@ -68,9 +69,24 @@
             android:text="Guardar Parque"
             android:textColor="@android:color/white" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right">
+
+
+            <Button
+                android:id="@+id/volver"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Volver"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+
     </LinearLayout>
-
-
 
 
 </FrameLayout>

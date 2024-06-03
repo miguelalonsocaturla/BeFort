@@ -23,16 +23,24 @@
         android:id="@+id/newMaquinaFragment"
         android:name="com.example.befort.NewMaquinaFragment"
         android:label="Nueva Maquina"
-        tools:layout="@layout/fragment_new_maquina" />
+        tools:layout="@layout/fragment_new_maquina" >
+        <action
+            android:id="@+id/action_newMaquinaFragment_to_adminFragment"
+            app:destination="@id/adminFragment" />
+    </fragment>
     <fragment
         android:id="@+id/newParqueFragment"
         android:name="com.example.befort.NewParqueFragment"
         android:label="Nuevo Parque"
-        tools:layout="@layout/fragment_new_parque" />
+        tools:layout="@layout/fragment_new_parque" >
+        <action
+            android:id="@+id/action_newParqueFragment_to_adminFragment"
+            app:destination="@id/adminFragment" />
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.befort.LoginFragment"
-        android:label="fragment_login"
+        android:label="Login"
         tools:layout="@layout/fragment_login">
         <action
         android:id="@+id/action_loginFragment_to_adminFragment"
@@ -40,13 +48,16 @@
         <action
             android:id="@+id/action_loginFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registroFragment"
+            app:destination="@id/registroFragment" />
     </fragment>
 
 
     <fragment
         android:id="@+id/adminFragment"
         android:name="com.example.befort.AdminFragment"
-        android:label="fragment_admin"
+        android:label="Administración"
         tools:layout="@layout/fragment_admin" >
         <action
             android:id="@+id/action_adminFragment_to_newParqueFragment"
@@ -55,6 +66,18 @@
             android:id="@+id/action_adminFragment_to_newMaquinaFragment"
             app:destination="@id/newMaquinaFragment" />
 
+    </fragment>
+    <fragment
+        android:id="@+id/registroFragment"
+        android:name="com.example.befort.RegistroFragment"
+        android:label="Registro"
+        tools:layout="@layout/fragment_registro" >
+        <action
+            android:id="@+id/action_registroFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_registroFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
     </fragment>
 </navigation>
 

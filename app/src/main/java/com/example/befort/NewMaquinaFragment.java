@@ -3,6 +3,8 @@ package com.example.befort;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +35,8 @@ public class NewMaquinaFragment extends Fragment {
         EditText editTextTipo = view.findViewById(R.id.editTextTipo);
         EditText editTextDescripcion = view.findViewById(R.id.editTextDescripcion);
         Button buttonAgregar = view.findViewById(R.id.buttonAgregar);
-
+        Button btnVolver = view.findViewById(R.id.volver1);
+        btnVolver.setOnClickListener(v -> volver());
         buttonAgregar.setOnClickListener(view1 -> {
             String nombre = editTextNombre.getText().toString();
             String tipo = editTextTipo.getText().toString();
@@ -61,5 +64,10 @@ public class NewMaquinaFragment extends Fragment {
 
         });
         return view;
+    }
+
+    private void volver(){
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_main);
+        navController.navigate(R.id.action_newMaquinaFragment_to_adminFragment);
     }
 }
