@@ -20,9 +20,20 @@
             android:src="@drawable/logo1"
             android:layout_marginBottom="10dp"/>
 
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Para eliminar algun dato ir a las listas de ellos mismos"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_marginTop="20dp"
+            android:textSize="18dp"
+            android:textStyle="bold|normal"/>
+
         <LinearLayout
             android:layout_width="384dp"
-            android:layout_height="184dp"
+            android:layout_height="125dp"
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:orientation="horizontal">

@@ -1,5 +1,6 @@
 package com.example.befort;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import com.example.befort.model.Maquinas;
 import com.google.firebase.firestore.CollectionReference;
@@ -25,11 +27,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MaquinasFragment extends Fragment {
-
+    private SharedPreferences sharedPreferences;
     private ListView lista;
     private EditText editTextBuscar;
     private Button botonBuscar;
     private List<Maquinas> maquinasList;
+    private boolean isAdmin;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +43,10 @@ public class MaquinasFragment extends Fragment {
         editTextBuscar = view.findViewById(R.id.editTextText2);
         botonBuscar = view.findViewById(R.id.button2);
         lista = view.findViewById(R.id.listaMaquinas);
+
+        // Inicializar SharedPreferences
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        isAdmin = "Y".equals(sharedPreferences.getString("admin", null));
 
         // Inicializar la lista de máquinas
         maquinasList = new ArrayList<>();
@@ -68,8 +75,10 @@ public class MaquinasFragment extends Fragment {
         CollectionReference maquinasRef = db.collection("maquinas");
 
         maquinasRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            maquinasList.clear();
             for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                 Maquinas maquina = documentSnapshot.toObject(Maquinas.class);
+                maquina.setId(documentSnapshot.getId());  // Asignar el ID del documento
                 maquinasList.add(maquina);
             }
 
@@ -83,7 +92,6 @@ public class MaquinasFragment extends Fragment {
     }
 
     private void mostrarListaMaquinas() {
-
         ArrayAdapter<Maquinas> adapter = configurarAdapter(maquinasList);
         lista.setAdapter(adapter);
 
@@ -91,15 +99,38 @@ public class MaquinasFragment extends Fragment {
         lista.setOnItemClickListener((parent, view, position, id) -> mostrarDetallesMaquina(position));
     }
 
-
     private void mostrarDetallesMaquina(int position) {
         Maquinas maquina = maquinasList.get(position);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle(maquina.getNombre());
         builder.setMessage("Tipo: " + maquina.getTipo() + "\nDescripción: " + maquina.getDescripcion());
+
+        // Botón OK para cerrar el diálogo
         builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+
+        // Si el usuario es administrador, mostrar el botón Eliminar
+        if (isAdmin) {
+            builder.setNegativeButton("Eliminar", (dialog, which) -> {
+                eliminarMaquina(maquina);
+                dialog.dismiss();
+            });
+        }
+
         builder.show();
+    }
+
+    private void eliminarMaquina(Maquinas maquina) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference maquinasRef = db.collection("maquinas");
+
+        maquinasRef.document(maquina.getId()).delete().addOnSuccessListener(aVoid -> {
+            Log.d("FirebaseSuccess", "Documento eliminado correctamente");
+            maquinasList.remove(maquina);
+            mostrarListaMaquinas();
+        }).addOnFailureListener(e -> {
+            Log.e("FirebaseError", "Error al eliminar documento", e);
+        });
     }
 
     private void buscarMaquinaPorNombre(String textoBusqueda) {
@@ -124,12 +155,12 @@ public class MaquinasFragment extends Fragment {
     }
 
     private ArrayAdapter<Maquinas> configurarAdapter(List<Maquinas> listaMaquinas) {
-        ArrayAdapter<Maquinas> adapter = new ArrayAdapter<Maquinas>(requireActivity(), android.R.layout.simple_list_item_1, listaMaquinas) {
+        return new ArrayAdapter<Maquinas>(requireActivity(), android.R.layout.simple_list_item_1, listaMaquinas) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
-                TextView textView = (TextView) view.findViewById(android.R.id.text1);
+                TextView textView = view.findViewById(android.R.id.text1);
 
                 // Obtener el objeto Maquinas en la posición actual desde la lista filtrada
                 Maquinas maquina = listaMaquinas.get(position);
@@ -140,7 +171,6 @@ public class MaquinasFragment extends Fragment {
                 return view;
             }
         };
-        return adapter;
     }
-
 }
+

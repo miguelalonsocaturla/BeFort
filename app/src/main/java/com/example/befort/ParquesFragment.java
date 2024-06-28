@@ -1,8 +1,10 @@
 package com.example.befort;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +36,8 @@ public class ParquesFragment extends Fragment {
     private EditText editTextBuscar;
     private Button botonBuscar;
     private List<Parques> parquesList;
+    private SharedPreferences sharedPreferences;
+    private boolean isAdmin;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,10 +49,14 @@ public class ParquesFragment extends Fragment {
         botonBuscar = view.findViewById(R.id.button2);
         lista = view.findViewById(R.id.listaParques);
 
-        // Inicializar la lista de máquinas
+        // Inicializar SharedPreferences
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        isAdmin = "Y".equals(sharedPreferences.getString("admin", null));
+
+        // Inicializar la lista de parques
         parquesList = new ArrayList<>();
 
-        // Obtener y mostrar la lista de máquinas
+        // Obtener y mostrar la lista de parques
         obtenerListaParques();
 
         // Configurar el OnClickListener para el botón de búsqueda
@@ -72,8 +80,10 @@ public class ParquesFragment extends Fragment {
         CollectionReference parquesRef = db.collection("parques");
 
         parquesRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            parquesList.clear();
             for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                 Parques parque = documentSnapshot.toObject(Parques.class);
+                parque.setId(documentSnapshot.getId());  // Asignar el ID del documento
                 parquesList.add(parque);
             }
 
@@ -87,14 +97,12 @@ public class ParquesFragment extends Fragment {
     }
 
     private void mostrarListaParques() {
-
         ArrayAdapter<Parques> adapter = configurarAdapter(parquesList);
         lista.setAdapter(adapter);
 
-        // Configurar el OnClickListener para mostrar detalles de una máquina al hacer clic en la lista
+        // Configurar el OnClickListener para mostrar detalles de un parque al hacer clic en la lista
         lista.setOnItemClickListener((parent, view, position, id) -> mostrarDetallesParque(position));
     }
-
 
     private void mostrarDetallesParque(int position) {
         Parques parque = parquesList.get(position);
@@ -133,10 +141,31 @@ public class ParquesFragment extends Fragment {
             }
         });
 
+        // Si el usuario es administrador, mostrar el botón Eliminar
+        if (isAdmin) {
+            builder.setNegativeButton("Eliminar", (dialog, which) -> {
+                eliminarParque(parque);
+                dialog.dismiss();
+            });
+        }
+
         // Botón para cerrar el AlertDialog
-        builder.setNegativeButton("Cerrar", (dialog, which) -> dialog.dismiss());
+        builder.setNeutralButton("Cerrar", (dialog, which) -> dialog.dismiss());
 
         builder.show();
+    }
+
+    private void eliminarParque(Parques parque) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference parquesRef = db.collection("parques");
+
+        parquesRef.document(parque.getId()).delete().addOnSuccessListener(aVoid -> {
+            Log.d("FirebaseSuccess", "Documento eliminado correctamente");
+            parquesList.remove(parque);
+            mostrarListaParques();
+        }).addOnFailureListener(e -> {
+            Log.e("FirebaseError", "Error al eliminar documento", e);
+        });
     }
 
     private void buscarParquePorNombre(String textoBusqueda) {
@@ -149,7 +178,7 @@ public class ParquesFragment extends Fragment {
             // Obtener el nombre del parque en minúsculas para la comparación
             String nombreParqueLowerCase = parque.getNombre().toLowerCase();
 
-            // Realizar la comparación para ver si el nombre de la máquina contiene el texto de búsqueda
+            // Realizar la comparación para ver si el nombre del parque contiene el texto de búsqueda
             if (nombreParqueLowerCase.contains(textoBusquedaLowerCase)) {
                 resultadosBusqueda.add(parque);
             }
@@ -161,23 +190,21 @@ public class ParquesFragment extends Fragment {
     }
 
     private ArrayAdapter<Parques> configurarAdapter(List<Parques> listaParques) {
-        ArrayAdapter<Parques> adapter = new ArrayAdapter<Parques>(requireActivity(), android.R.layout.simple_list_item_1, listaParques) {
+        return new ArrayAdapter<Parques>(requireActivity(), android.R.layout.simple_list_item_1, listaParques) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
-                TextView textView = (TextView) view.findViewById(android.R.id.text1);
+                TextView textView = view.findViewById(android.R.id.text1);
 
-                // Obtener el objeto Maquinas en la posición actual desde la lista filtrada
+                // Obtener el objeto Parques en la posición actual desde la lista filtrada
                 Parques parque = listaParques.get(position);
 
-                // Configurar el texto del TextView con el nombre de la Maquina
+                // Configurar el texto del TextView con el nombre del parque
                 textView.setText(parque.getNombre());
 
                 return view;
             }
         };
-        return adapter;
     }
-
 }
