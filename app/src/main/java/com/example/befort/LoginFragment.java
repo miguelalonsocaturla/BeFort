@@ -76,27 +76,22 @@ public class LoginFragment extends Fragment {
         buttonLogin.setOnClickListener(v -> {
             String email = editTextEmail.getText().toString().trim();
             String password = editTextPassword.getText().toString().trim();
-
             if (validateInputs(email, password)) {
                 checkUserCredentials(email, password, view);
             }
         });
     }
-
     private boolean validateInputs(String email, String password) {
         if (TextUtils.isEmpty(email)) {
             editTextEmail.setError("Por favor ingresa tu correo electrónico");
             return false;
         }
-
         if (TextUtils.isEmpty(password)) {
             editTextPassword.setError("Por favor ingresa tu contraseña");
             return false;
         }
-
         return true;
     }
-
     private void checkUserCredentials(final String email, final String password, View view) {
         db.collection("usuarios")
                 .whereEqualTo("usuario", email)

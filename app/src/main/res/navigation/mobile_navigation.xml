@@ -65,6 +65,12 @@
         <action
             android:id="@+id/action_adminFragment_to_newMaquinaFragment"
             app:destination="@id/newMaquinaFragment" />
+        <action
+            android:id="@+id/action_adminFragment_to_parquesFragment"
+            app:destination="@id/parquesFragment" />
+        <action
+            android:id="@+id/action_adminFragment_to_maquinasFragment"
+            app:destination="@id/maquinasFragment" />
 
     </fragment>
     <fragment

@@ -107,16 +107,11 @@ public class ParquesFragment extends Fragment {
     private void mostrarDetallesParque(int position) {
         Parques parque = parquesList.get(position);
 
-        // Aquí puedes mostrar las máquinas asociadas al parque seleccionado en lugar de abrir Google Maps
         List<Maquinas> maquinas = parque.getListaMaquinas();
-
-        // Puedes mostrar las máquinas en un nuevo diálogo, en otro ListView, etc.
-        // Por ejemplo:
         StringBuilder machinesText = new StringBuilder("Máquinas en este parque:\n-");
         for (Maquinas maquina : maquinas) {
             machinesText.append(maquina.getNombre()).append("\n-");
         }
-
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle(parque.getNombre());
         builder.setMessage(machinesText.toString());
@@ -125,13 +120,10 @@ public class ParquesFragment extends Fragment {
             double latitud = parque.getLatitud();
             double longitud = parque.getLongitud();
             String nombreMarcador = parque.getNombre();
-
             // Construir la URL para abrir Google Maps con el marcador en la ubicación específica
             String mapUrl = "geo:" + latitud + "," + longitud + "?q=" + latitud + "," + longitud + "(" + nombreMarcador + ")";
-
-            // Crear un Intent para abrir Google Maps con la ubicación y marcador
+            // Crear un Intent para abrir un navegador con la ubicación y marcador
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mapUrl));
-
             // Verificar si hay una actividad que pueda manejar la acción (abrir Google Maps)
             if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
                 startActivity(intent);
@@ -148,7 +140,6 @@ public class ParquesFragment extends Fragment {
                 dialog.dismiss();
             });
         }
-
         // Botón para cerrar el AlertDialog
         builder.setNeutralButton("Cerrar", (dialog, which) -> dialog.dismiss());
 
@@ -177,18 +168,15 @@ public class ParquesFragment extends Fragment {
         for (Parques parque : parquesList) {
             // Obtener el nombre del parque en minúsculas para la comparación
             String nombreParqueLowerCase = parque.getNombre().toLowerCase();
-
             // Realizar la comparación para ver si el nombre del parque contiene el texto de búsqueda
             if (nombreParqueLowerCase.contains(textoBusquedaLowerCase)) {
                 resultadosBusqueda.add(parque);
             }
         }
-
         // Mostrar los resultados de la búsqueda en el ListView
         ArrayAdapter<Parques> adapter = configurarAdapter(resultadosBusqueda);
         lista.setAdapter(adapter);
     }
-
     private ArrayAdapter<Parques> configurarAdapter(List<Parques> listaParques) {
         return new ArrayAdapter<Parques>(requireActivity(), android.R.layout.simple_list_item_1, listaParques) {
             @NonNull
@@ -196,13 +184,10 @@ public class ParquesFragment extends Fragment {
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView textView = view.findViewById(android.R.id.text1);
-
                 // Obtener el objeto Parques en la posición actual desde la lista filtrada
                 Parques parque = listaParques.get(position);
-
                 // Configurar el texto del TextView con el nombre del parque
                 textView.setText(parque.getNombre());
-
                 return view;
             }
         };

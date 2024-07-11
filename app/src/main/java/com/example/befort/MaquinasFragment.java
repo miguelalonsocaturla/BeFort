@@ -47,7 +47,7 @@ public class MaquinasFragment extends Fragment {
         // Inicializar SharedPreferences
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         isAdmin = "Y".equals(sharedPreferences.getString("admin", null));
-
+        isAdmin= true;
         // Inicializar la lista de máquinas
         maquinasList = new ArrayList<>();
 
@@ -81,31 +81,24 @@ public class MaquinasFragment extends Fragment {
                 maquina.setId(documentSnapshot.getId());  // Asignar el ID del documento
                 maquinasList.add(maquina);
             }
-
-            // Mostrar la lista de máquinas en el ListView
             mostrarListaMaquinas();
-
         }).addOnFailureListener(e -> {
             // Manejar errores al obtener datos de Firestore
             Log.e("FirebaseError", "Error al obtener documentos", e);
         });
     }
-
     private void mostrarListaMaquinas() {
         ArrayAdapter<Maquinas> adapter = configurarAdapter(maquinasList);
         lista.setAdapter(adapter);
-
         // Configurar el OnClickListener para mostrar detalles de una máquina al hacer clic en la lista
         lista.setOnItemClickListener((parent, view, position, id) -> mostrarDetallesMaquina(position));
     }
-
     private void mostrarDetallesMaquina(int position) {
         Maquinas maquina = maquinasList.get(position);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle(maquina.getNombre());
         builder.setMessage("Tipo: " + maquina.getTipo() + "\nDescripción: " + maquina.getDescripcion());
-
         // Botón OK para cerrar el diálogo
         builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
 
@@ -116,14 +109,12 @@ public class MaquinasFragment extends Fragment {
                 dialog.dismiss();
             });
         }
-
         builder.show();
     }
 
     private void eliminarMaquina(Maquinas maquina) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference maquinasRef = db.collection("maquinas");
-
         maquinasRef.document(maquina.getId()).delete().addOnSuccessListener(aVoid -> {
             Log.d("FirebaseSuccess", "Documento eliminado correctamente");
             maquinasList.remove(maquina);
@@ -132,28 +123,22 @@ public class MaquinasFragment extends Fragment {
             Log.e("FirebaseError", "Error al eliminar documento", e);
         });
     }
-
     private void buscarMaquinaPorNombre(String textoBusqueda) {
         List<Maquinas> resultadosBusqueda = new ArrayList<>();
-
         // Convertir el texto de búsqueda a minúsculas para una comparación insensible a mayúsculas/minúsculas
         String textoBusquedaLowerCase = textoBusqueda.toLowerCase();
-
         for (Maquinas maquina : maquinasList) {
             // Obtener el nombre de la máquina en minúsculas para la comparación
             String nombreMaquinaLowerCase = maquina.getNombre().toLowerCase();
-
             // Realizar la comparación para ver si el nombre de la máquina contiene el texto de búsqueda
             if (nombreMaquinaLowerCase.contains(textoBusquedaLowerCase)) {
                 resultadosBusqueda.add(maquina);
             }
         }
-
         // Mostrar los resultados de la búsqueda en el ListView
         ArrayAdapter<Maquinas> adapter = configurarAdapter(resultadosBusqueda);
         lista.setAdapter(adapter);
     }
-
     private ArrayAdapter<Maquinas> configurarAdapter(List<Maquinas> listaMaquinas) {
         return new ArrayAdapter<Maquinas>(requireActivity(), android.R.layout.simple_list_item_1, listaMaquinas) {
             @NonNull
@@ -161,13 +146,10 @@ public class MaquinasFragment extends Fragment {
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView textView = view.findViewById(android.R.id.text1);
-
                 // Obtener el objeto Maquinas en la posición actual desde la lista filtrada
                 Maquinas maquina = listaMaquinas.get(position);
-
                 // Configurar el texto del TextView con el nombre de la Maquina
                 textView.setText(maquina.getNombre());
-
                 return view;
             }
         };

@@ -25,7 +25,6 @@ public class NewMaquinaFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,21 +46,17 @@ public class NewMaquinaFragment extends Fragment {
                 Toast.makeText(this.getContext(), "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
                 return;
             }
-
             // Crear una nueva instancia de Maquinas con los datos ingresados
             Maquinas nuevaMaquina = new Maquinas();
             nuevaMaquina.setNombre(nombre);
             nuevaMaquina.setTipo(tipo);
             nuevaMaquina.setDescripcion(descripcion);
 
-
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("maquinas").add(nuevaMaquina);
 
             // Mostrar un mensaje
             Toast.makeText(this.getContext(), "Máquina añadida correctamente: " + nuevaMaquina.getNombre(), Toast.LENGTH_SHORT).show();
-
-
         });
         return view;
     }

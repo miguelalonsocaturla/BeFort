@@ -39,16 +39,13 @@ public class NewParqueFragment extends Fragment implements OnMapReadyCallback {
 
     private MapView mapView;
     private GoogleMap googleMap;
-
     private EditText editTextNombreParque;
     private Spinner spinnerMaquinas;
     private Button btnAgregarMaquina;
     private TextView textViewMaquinasSeleccionadas;
     private List<Maquinas> maquinasDisponibles;
     private List<Maquinas> maquinasSeleccionadas;
-
     private double latitude,longitude;
-
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -56,83 +53,46 @@ public class NewParqueFragment extends Fragment implements OnMapReadyCallback {
         mapView.onSaveInstanceState(outState);
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_parque, container, false);
-
-        // Inicializar vistas
+        // Inicializa
         editTextNombreParque = view.findViewById(R.id.editTextNombreParque);
         spinnerMaquinas = view.findViewById(R.id.spinnerMaquinas);
         btnAgregarMaquina = view.findViewById(R.id.btnAgregarMaquina);
         textViewMaquinasSeleccionadas = view.findViewById(R.id.textViewMaquinasSeleccionadas);
-
-        // Inicializar listas
         maquinasDisponibles = new ArrayList<>();
         maquinasSeleccionadas = new ArrayList<>();
-
-        // Inicializar MapView
         mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         mapView.getMapAsync(this); // Método onMapReady será llamado cuando el mapa esté listo
-
-
         // Configurar Spinner con máquinas disponibles
         setupSpinner();
-
         // Configurar botón "Agregar Máquina"
         btnAgregarMaquina.setOnClickListener(v -> agregarMaquinaSeleccionada());
-
         // Configurar botón "Guardar Parque"
         Button btnGuardarParque = view.findViewById(R.id.btnGuardarParque);
         btnGuardarParque.setOnClickListener(v -> guardarParque());
-
         // Configurar botón "Guardar Parque"
         Button btnVolver = view.findViewById(R.id.volver);
         btnVolver.setOnClickListener(v -> volver());
-
         return view;
     }
 
     @Override
     public void onMapReady(GoogleMap map) {
         googleMap = map;
-
         // Configurar la ubicación predeterminada o mostrar la ubicación actual del usuario
         LatLng centroValencia = new LatLng(39.46975, -0.37739); // Coordenadas del centro de Valencia
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(centroValencia, 12f)); // Zoom nivel 12
-
-
         // Manejar clics en el mapa para obtener coordenadas
         googleMap.setOnMapClickListener(latLng -> {
             // Obtener latitud y longitud de la ubicación seleccionada
             googleMap.clear(); // Limpiar marcadores previos
             googleMap.addMarker(new MarkerOptions().position(latLng).title("Ubicación seleccionada"));
-            Toast.makeText(requireContext(), "Latitud: " + latLng.latitude + ", Longitud: " + latLng.longitude, Toast.LENGTH_SHORT).show();
-
             latitude = latLng.latitude;
             longitude = latLng.longitude;
-
-
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
     }
     private void setupSpinner() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -151,7 +111,6 @@ public class NewParqueFragment extends Fragment implements OnMapReadyCallback {
             Toast.makeText(requireContext(), "Error al cargar las máquinas disponibles", Toast.LENGTH_SHORT).show();
         });
     }
-
     private void actualizarSpinner() {
         List<String> nombresMaquinas = new ArrayList<>();
         for (Maquinas maquina : maquinasDisponibles) {
